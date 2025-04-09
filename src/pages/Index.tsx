@@ -28,7 +28,7 @@ const Index = () => {
 
               <p>
                 If you find a video that isn't related to the topic you've chosen on Home, let us know by tapping 
-                More ⋮ and then Not <topic> ⓘ.
+                More ⋮ and then Not &lt;topic&gt; ⓘ.
               </p>
 
               <h2>Another section with multiple paragraphs</h2>
