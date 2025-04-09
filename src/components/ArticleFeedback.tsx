@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import FeedbackIcon from './FeedbackIcon';
 import FeedbackDialog from './FeedbackDialog';
-import { useToast } from 'sonner';
+import { toast } from 'sonner';
 
 const ArticleFeedback: React.FC = () => {
   const [activeElement, setActiveElement] = useState<HTMLElement | null>(null);
@@ -11,7 +11,6 @@ const ArticleFeedback: React.FC = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedText, setSelectedText] = useState('');
   const articleRef = useRef<HTMLDivElement>(null);
-  const toast = useToast();
   
   // Find all paragraph elements within the article
   useEffect(() => {
@@ -99,14 +98,19 @@ const ArticleFeedback: React.FC = () => {
         {/* The actual article content will be here in WordPress */}
       </div>
       
-      <FeedbackIcon 
-        isVisible={isIconVisible} 
-        onClick={handleIconClick} 
+      <div 
         style={{
+          position: 'fixed',
           top: `${iconPosition.top}px`,
           left: `${iconPosition.left}px`,
+          zIndex: 9999,
         }}
-      />
+      >
+        <FeedbackIcon 
+          isVisible={isIconVisible} 
+          onClick={handleIconClick} 
+        />
+      </div>
       
       <FeedbackDialog 
         isOpen={isDialogOpen}
@@ -114,12 +118,14 @@ const ArticleFeedback: React.FC = () => {
         selectedText={selectedText}
       />
       
-      <style jsx>{`
+      <style>
+        {`
         .feedback-highlight {
           background-color: rgba(66, 133, 244, 0.1);
           transition: background-color 0.3s ease;
         }
-      `}</style>
+        `}
+      </style>
     </>
   );
 };
