@@ -4,9 +4,26 @@ import { Button } from '@/components/ui/button';
 import WordpressArticleFeedback from '@/components/WordpressArticleFeedback';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { ArrowRight, Download } from 'lucide-react';
+import { toast } from 'sonner';
 
 const Index = () => {
   const articleRef = useRef<HTMLDivElement>(null);
+
+  const handleDownload = () => {
+    // In a real implementation, this would point to an actual file
+    // For demo purposes, we'll create a simulated download
+    const link = document.createElement('a');
+    link.href = '/wordpress-integration-guide.md'; // Temporary solution pointing to our guide
+    link.download = 'article-feedback-plugin.zip';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    // Provide feedback to the user
+    toast.success('Plugin download started', {
+      description: 'Check your downloads folder for article-feedback-plugin.zip'
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
@@ -37,7 +54,7 @@ const Index = () => {
                     <p className="text-sm text-gray-600">
                       Download the plugin files by clicking the button below.
                     </p>
-                    <Button className="mt-3" size="sm">
+                    <Button className="mt-3" size="sm" onClick={handleDownload}>
                       Download Plugin (.zip)
                     </Button>
                   </div>
