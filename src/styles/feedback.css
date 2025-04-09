@@ -1,0 +1,26 @@
+
+/* Article feedback styles */
+.feedback-highlight {
+  background-color: rgba(66, 133, 244, 0.1) !important;
+  transition: background-color 0.3s ease !important;
+}
+
+.feedback-icon {
+  position: fixed;
+  transition: opacity 200ms ease;
+  background-color: white;
+  border-radius: 50%;
+  padding: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  z-index: 9999;
+}
+
+.feedback-icon:hover {
+  background-color: #f8f9fa;
+}
+
+.feedback-icon.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
