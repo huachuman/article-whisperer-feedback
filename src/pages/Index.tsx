@@ -2,6 +2,8 @@
 import React, { useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import WordpressArticleFeedback from '@/components/WordpressArticleFeedback';
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { ArrowRight, Download } from 'lucide-react';
 
 const Index = () => {
   const articleRef = useRef<HTMLDivElement>(null);
@@ -12,6 +14,63 @@ const Index = () => {
         <header className="mb-8 text-center">
           <h1 className="text-3xl font-bold mb-2">Article Whisperer Feedback</h1>
           <p className="text-gray-600">Hover over paragraphs to provide feedback</p>
+          
+          <div className="mt-6 flex justify-center gap-4">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="default" className="flex items-center gap-2">
+                  <Download className="w-4 h-4" />
+                  Installation Guide
+                </Button>
+              </SheetTrigger>
+              <SheetContent className="overflow-y-auto">
+                <SheetHeader>
+                  <SheetTitle>WordPress Installation</SheetTitle>
+                  <SheetDescription>
+                    Follow these steps to add feedback to your WordPress site
+                  </SheetDescription>
+                </SheetHeader>
+                
+                <div className="mt-6 space-y-6">
+                  <div>
+                    <h3 className="text-lg font-medium mb-2">Step 1: Download Files</h3>
+                    <p className="text-sm text-gray-600">
+                      Download the plugin files by clicking the button below.
+                    </p>
+                    <Button className="mt-3" size="sm">
+                      Download Plugin (.zip)
+                    </Button>
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-lg font-medium mb-2">Step 2: Upload to WordPress</h3>
+                    <p className="text-sm text-gray-600">
+                      In your WordPress admin, go to Plugins → Add New → Upload Plugin and select the downloaded zip file.
+                    </p>
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-lg font-medium mb-2">Step 3: Activate</h3>
+                    <p className="text-sm text-gray-600">
+                      After installation, click "Activate Plugin" to enable it on your site.
+                    </p>
+                  </div>
+                  
+                  <div>
+                    <h3 className="text-lg font-medium mb-2">Step 4: Customize (Optional)</h3>
+                    <p className="text-sm text-gray-600">
+                      If needed, edit the article-feedback.php file to change the article selector to match your theme.
+                    </p>
+                  </div>
+                  
+                  <Button variant="outline" onClick={() => window.open('/wordpress-integration-guide.md', '_blank')}>
+                    View Full Documentation
+                    <ArrowRight className="ml-2 w-4 h-4" />
+                  </Button>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
         </header>
 
         <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
@@ -64,10 +123,6 @@ const Index = () => {
               </ul>
             </div>
           </div>
-        </div>
-
-        <div className="mt-8 text-center">
-          <Button variant="outline">Learn More About Article Feedback</Button>
         </div>
       </div>
 
