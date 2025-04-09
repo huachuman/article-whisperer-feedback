@@ -6,9 +6,16 @@ import { cn } from '@/lib/utils';
 interface FeedbackIconProps {
   isVisible: boolean;
   onClick: () => void;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 
-const FeedbackIcon: React.FC<FeedbackIconProps> = ({ isVisible, onClick }) => {
+const FeedbackIcon: React.FC<FeedbackIconProps> = ({ 
+  isVisible, 
+  onClick,
+  onMouseEnter,
+  onMouseLeave
+}) => {
   return (
     <div 
       className={cn(
@@ -16,6 +23,8 @@ const FeedbackIcon: React.FC<FeedbackIconProps> = ({ isVisible, onClick }) => {
         isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
       )}
       onClick={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <MessageCircle className="w-5 h-5 text-blue-600" />
     </div>

@@ -9,6 +9,23 @@ interface WordpressArticleFeedbackProps {
   feedbackLabel?: string;
 }
 
+/**
+ * WordPress Article Feedback Component
+ * 
+ * This component can be integrated into WordPress in two ways:
+ * 
+ * 1. As a WordPress plugin that loads this React component
+ *    - Create a WordPress plugin that enqueues the compiled JS/CSS
+ *    - Use wp_localize_script to pass WordPress-specific data
+ *    - Target the correct article container using the articleSelector prop
+ * 
+ * 2. As part of a WordPress theme that uses React
+ *    - Include this component in your theme's React code
+ *    - Mount it on the article pages with the correct selector
+ * 
+ * In both cases, you'll need a backend endpoint to receive the feedback data.
+ * This can be implemented as a WordPress REST API endpoint.
+ */
 const WordpressArticleFeedback: React.FC<WordpressArticleFeedbackProps> = ({
   articleSelector = ".entry-content",
   feedbackLabel = "Submit feedback for this paragraph"
@@ -22,14 +39,14 @@ const WordpressArticleFeedback: React.FC<WordpressArticleFeedbackProps> = ({
     selectedText,
     isDialogOpen,
     handleIconClick,
-    handleCloseDialog
+    handleCloseDialog,
+    handleIconHover
   } = useArticleFeedback({
     containerRef,
     selectors: ['p', 'h2', 'h3', 'h4', 'h5', 'h6', 'li', 'blockquote'] 
   });
 
   // In a real implementation, this would inject styles into the parent document
-  // For now, we'll just include them in our component
   React.useEffect(() => {
     const style = document.createElement('style');
     style.textContent = `
@@ -49,8 +66,7 @@ const WordpressArticleFeedback: React.FC<WordpressArticleFeedbackProps> = ({
   React.useEffect(() => {
     const articleContent = document.querySelector(articleSelector);
     if (articleContent && containerRef.current) {
-      // In a real implementation, we would add our ref to the article container
-      // For demo purposes, we're just simulating that connection
+      // In a real WordPress implementation, this would attach our ref to the article container
       containerRef.current = articleContent as HTMLDivElement;
     }
   }, [articleSelector]);
@@ -67,7 +83,9 @@ const WordpressArticleFeedback: React.FC<WordpressArticleFeedbackProps> = ({
       >
         <FeedbackIcon 
           isVisible={isIconVisible} 
-          onClick={handleIconClick} 
+          onClick={handleIconClick}
+          onMouseEnter={handleIconHover}
+          onMouseLeave={handleIconHover}
         />
       </div>
       
@@ -77,7 +95,7 @@ const WordpressArticleFeedback: React.FC<WordpressArticleFeedbackProps> = ({
         selectedText={selectedText}
       />
       
-      {/* This div is just a reference holder for our hook */}
+      {/* This div is just a reference holder for our hook in demo mode */}
       <div ref={containerRef} style={{ display: 'none' }}></div>
     </>
   );

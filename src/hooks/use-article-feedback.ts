@@ -25,6 +25,7 @@ export function useArticleFeedback({
   });
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const iconTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -38,6 +39,12 @@ export function useArticleFeedback({
         const element = findClosestElement(target, selectors);
         
         if (element) {
+          // If we were about to hide the icon, cancel that timeout
+          if (iconTimeoutRef.current) {
+            clearTimeout(iconTimeoutRef.current);
+            iconTimeoutRef.current = null;
+          }
+          
           const rect = element.getBoundingClientRect();
           
           // Position icon to the right of the element
@@ -54,9 +61,15 @@ export function useArticleFeedback({
         }
       }
       
-      // Hide icon if not hovering over a target element
+      // Don't hide immediately if dialog is open
       if (state.isIconVisible && !isDialogOpen) {
-        setState(prev => ({ ...prev, isIconVisible: false, activeElement: null }));
+        // Set a timeout before hiding the icon to give users time to hover on it
+        if (!iconTimeoutRef.current) {
+          iconTimeoutRef.current = setTimeout(() => {
+            setState(prev => ({ ...prev, isIconVisible: false, activeElement: null }));
+            iconTimeoutRef.current = null;
+          }, 300); // 300ms delay before hiding
+        }
       }
     };
     
@@ -82,8 +95,19 @@ export function useArticleFeedback({
     
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
+      if (iconTimeoutRef.current) {
+        clearTimeout(iconTimeoutRef.current);
+      }
     };
   }, [containerRef, selectors, state.isIconVisible, isDialogOpen]);
+
+  // Function to prevent the icon from disappearing when mouse is over it
+  const handleIconHover = () => {
+    if (iconTimeoutRef.current) {
+      clearTimeout(iconTimeoutRef.current);
+      iconTimeoutRef.current = null;
+    }
+  };
 
   const handleIconClick = () => {
     if (state.activeElement) {
@@ -114,6 +138,7 @@ export function useArticleFeedback({
     ...state,
     isDialogOpen,
     handleIconClick,
-    handleCloseDialog
+    handleCloseDialog,
+    handleIconHover
   };
 }
